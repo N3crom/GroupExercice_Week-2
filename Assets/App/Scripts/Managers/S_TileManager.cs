@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 
 public class S_TileManager : MonoBehaviour
@@ -12,8 +13,8 @@ public class S_TileManager : MonoBehaviour
     [Header("Output")]
     [SerializeField] private RSO_CellPos rsoCellPos;
 
-    private SerializableDictionary<int, Vector3> tileGroundDictionary = new SerializableDictionary<int, Vector3>();
-    private SerializableDictionary<int, Vector3> tileWallDictionary = new SerializableDictionary<int, Vector3>();
+    [SerializeField] private SerializableDictionary<GameObject, Vector3> tileGroundDictionary = new SerializableDictionary<GameObject, Vector3>();
+    [SerializeField] private SerializableDictionary<GameObject, Vector3> tileWallDictionary = new SerializableDictionary<GameObject, Vector3>();
 
     private void OnEnable()
     {
@@ -25,23 +26,18 @@ public class S_TileManager : MonoBehaviour
         rseGetCellPos.action -= GetCellPosition;
     }
 
-    private void Start()
-    {
-        Setup();
-    }
-
-    private void Setup()
+    private void Awake()
     {
         for (int i = 0; i < tilemapGround.childCount; i++)
         {
             Transform child = tilemapGround.GetChild(i);
-            tileGroundDictionary.Dictionary.Add(i, child.position);
+            tileGroundDictionary.Dictionary.Add(child.gameObject, child.position);
         }
 
         for (int i = 0; i < tilemapWall.childCount; i++)
         {
             Transform child = tilemapWall.GetChild(i);
-            tileWallDictionary.Dictionary.Add(i, child.position);
+            tileWallDictionary.Dictionary.Add(child.gameObject, child.position);
         }
     }
 
@@ -57,7 +53,10 @@ public class S_TileManager : MonoBehaviour
     {
         Vector3 cellPos = GetNearestCell(pos);
 
-        if (tileGroundDictionary.Dictionary.ContainsValue(cellPos) && !tileWallDictionary.Dictionary.ContainsValue(cellPos))
+        bool isGround = tileGroundDictionary.Dictionary.Values.Any(tile => Mathf.Approximately(tile.x, cellPos.x) && Mathf.Approximately(tile.z, cellPos.z));
+        bool isWall = tileWallDictionary.Dictionary.Values.Any(tile => Mathf.Approximately(tile.x, cellPos.x) && Mathf.Approximately(tile.z, cellPos.z));
+
+        if (isGround && !isWall)
         {
             rsoCellPos.Value = cellPos;
         }

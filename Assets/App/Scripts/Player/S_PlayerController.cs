@@ -6,6 +6,9 @@ public class S_PlayerController : MonoBehaviour
     [SerializeField] private RSE_GetCellPos rseGetCellPos;
     [SerializeField] private RSO_CellPos rsoCellPos;
 
+    [Header("Output")]
+    [SerializeField] private RSE_PlayerMove rsePlayerMove;
+
     private I_Inputs controls;
 
     private void Awake()
@@ -34,6 +37,11 @@ public class S_PlayerController : MonoBehaviour
     {
         rseGetCellPos.Call(transform.position + new Vector3(direction.x, 0, direction.y) * 2);
 
-        transform.position = new Vector3(rsoCellPos.Value.x, transform.position.y, rsoCellPos.Value.z);
+        if(transform.position != rsoCellPos.Value)
+        {
+            transform.position = new Vector3(rsoCellPos.Value.x, transform.position.y, rsoCellPos.Value.z);
+            rsePlayerMove.Call();
+        }
+        
     }
 }
