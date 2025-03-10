@@ -1,22 +1,19 @@
 using UnityEngine;
-using static UnityEditor.PlayerSettings;
 
 public class S_TileManager : MonoBehaviour
 {
-    //[Header("Settings")]
-
-    //[Header("References")]
-
-    //[Header("Input")]
-
-    //[Header("Output")]
-    [SerializeField] private RSE_GetCellPos rseGetCellPos;
-    [SerializeField] private RSO_CellPos rsoCellPos;
-
+    [Header("References")]
     [SerializeField] private Transform tilemapGround;
     [SerializeField] private Transform tilemapWall;
-    [SerializeField] private SerializableDictionary<int, Vector3> tileGroundDictionary = new SerializableDictionary<int, Vector3>();
-    [SerializeField] private SerializableDictionary<int, Vector3> tileWallDictionary = new SerializableDictionary<int, Vector3>();
+
+    [Header("Input")]
+    [SerializeField] private RSE_GetCellPos rseGetCellPos;
+
+    [Header("Output")]
+    [SerializeField] private RSO_CellPos rsoCellPos;
+
+    private SerializableDictionary<int, Vector3> tileGroundDictionary = new SerializableDictionary<int, Vector3>();
+    private SerializableDictionary<int, Vector3> tileWallDictionary = new SerializableDictionary<int, Vector3>();
 
     private void OnEnable()
     {
@@ -60,7 +57,7 @@ public class S_TileManager : MonoBehaviour
     {
         Vector3 cellPos = GetNearestCell(pos);
 
-        if (tileGroundDictionary.Dictionary.ContainsValue(cellPos))
+        if (tileGroundDictionary.Dictionary.ContainsValue(cellPos) && !tileWallDictionary.Dictionary.ContainsValue(cellPos))
         {
             rsoCellPos.Value = cellPos;
         }

@@ -1,17 +1,8 @@
 using UnityEngine;
-using UnityEngine.Tilemaps;
-using UnityEngine.UIElements;
 
 public class S_PlayerController : MonoBehaviour
 {
-    //[Header("Settings")]
-
-    //[Header("References")]
-
-    //[Header("Input")]
-
-    //[Header("Output")]
-
+    [Header("Input")]
     [SerializeField] private RSE_GetCellPos rseGetCellPos;
     [SerializeField] private RSO_CellPos rsoCellPos;
 
