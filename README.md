@@ -6,3 +6,4 @@ Requirements Done:
 - "Wall" tiles are impassable.
 - The player can pick objects (any kind).
 - To complete a level, the player must collect all objects and reach the exit tile.
+- Create a first fixed level to test the mechanics.
