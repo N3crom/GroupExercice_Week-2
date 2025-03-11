@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 
 public class S_PlayerController : MonoBehaviour
 {
-    [Header("Parameters")]
+    [Header("Settings")]
     [SerializeField] private float moveDelay;
     [SerializeField] private float cellSize;
 

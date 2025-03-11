@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class S_TileManager : MonoBehaviour
 {
-    [Header("Parameters")]
+    [Header("Settings")]
     [SerializeField] private float cellSize;
 
     [Header("References")]
