@@ -4,7 +4,7 @@ using UnityEngine;
 public class S_TileManager : MonoBehaviour
 {
     [Header("Parameters")]
-    [SerializeField] private float sizeCell;
+    [SerializeField] private float cellSize;
 
     [Header("References")]
     [SerializeField] private Transform tilemapGround;
@@ -16,8 +16,8 @@ public class S_TileManager : MonoBehaviour
     [Header("Output")]
     [SerializeField] private RSO_CellPos rsoCellPos;
 
-    private SerializableDictionary<GameObject, Vector3> tileGroundDictionary = new SerializableDictionary<GameObject, Vector3>();
-    private SerializableDictionary<GameObject, Vector3> tileWallDictionary = new SerializableDictionary<GameObject, Vector3>();
+    private SerializableDictionary<GameObject, Vector3> tileGroundDictionary = new();
+    private SerializableDictionary<GameObject, Vector3> tileWallDictionary = new();
 
     private void OnEnable()
     {
@@ -31,23 +31,22 @@ public class S_TileManager : MonoBehaviour
 
     private void Awake()
     {
-        for (int i = 0; i < tilemapGround.childCount; i++)
-        {
-            Transform child = tilemapGround.GetChild(i);
-            tileGroundDictionary.Dictionary.Add(child.gameObject, child.position);
-        }
+        PopulateDictionary(tilemapGround, tileGroundDictionary);
+        PopulateDictionary(tilemapWall, tileWallDictionary);
+    }
 
-        for (int i = 0; i < tilemapWall.childCount; i++)
+    private void PopulateDictionary(Transform tilemap, SerializableDictionary<GameObject, Vector3> dictionary)
+    {
+        foreach (Transform child in tilemap)
         {
-            Transform child = tilemapWall.GetChild(i);
-            tileWallDictionary.Dictionary.Add(child.gameObject, child.position);
+            dictionary.Dictionary[child.gameObject] = child.position;
         }
     }
 
     private Vector3 GetNearestCell(Vector3 pos)
     {
-        float gridX = Mathf.Round(pos.x / sizeCell) * sizeCell;
-        float gridZ = Mathf.Round(pos.z / sizeCell) * sizeCell;
+        float gridX = Mathf.Round(pos.x / cellSize) * cellSize;
+        float gridZ = Mathf.Round(pos.z / cellSize) * cellSize;
 
         return new Vector3(gridX, 0, gridZ);
     }

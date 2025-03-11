@@ -5,8 +5,8 @@ using UnityEngine.InputSystem;
 public class S_PlayerController : MonoBehaviour
 {
     [Header("Parameters")]
-    [SerializeField] private float delayMove;
-    [SerializeField] private float sizeCell;
+    [SerializeField] private float moveDelay;
+    [SerializeField] private float cellSize;
 
     [Header("Input")]
     [SerializeField] private RSE_GetCellPos rseGetCellPos;
@@ -15,7 +15,8 @@ public class S_PlayerController : MonoBehaviour
     [Header("Output")]
     [SerializeField] private RSE_PlayerMove rsePlayerMove;
 
-    bool isPressing = false;
+    bool isMoving = false;
+    private Coroutine moveCoroutine;
 
     private void Start()
     {
@@ -24,38 +25,39 @@ public class S_PlayerController : MonoBehaviour
 
     private void Move(Vector2 direction)
     {
-        rseGetCellPos.Call(transform.position + new Vector3(direction.x, 0, direction.y) * sizeCell);
+        Vector3 targetPos = transform.position + new Vector3(direction.x, 0, direction.y) * cellSize;
+        rseGetCellPos.Call(targetPos);
 
-        if(transform.position != rsoCellPos.Value)
+        if (transform.position != rsoCellPos.Value)
         {
             transform.position = new Vector3(rsoCellPos.Value.x, transform.position.y, rsoCellPos.Value.z);
             rsePlayerMove.Call();
         }
     }
 
-    private IEnumerator PlayerMove(InputAction.CallbackContext ctx)
+    private IEnumerator MoveRoutine(Vector2 direction)
     {
-        while(isPressing)
+        while (isMoving)
         {
-            Move(ctx.ReadValue<Vector2>());
+            Move(direction);
 
-            yield return new WaitForSeconds(delayMove);
+            yield return new WaitForSeconds(moveDelay);
         }
     }
 
-    public void Move(InputAction.CallbackContext ctx)
+    public void OnMove(InputAction.CallbackContext ctx)
     {
-        if(ctx.performed)
+        if (ctx.performed)
         {
-            isPressing = true;
+            isMoving = true;
 
-            StartCoroutine(PlayerMove(ctx));
+            moveCoroutine = StartCoroutine(MoveRoutine(ctx.ReadValue<Vector2>()));
         }
-        else if(ctx.canceled)
+        else if (ctx.canceled && moveCoroutine != null)
         {
-            isPressing = false;
+            isMoving = false;
 
-            StopAllCoroutines();
+            StopCoroutine(moveCoroutine);
         }
     }
 }

@@ -141,7 +141,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 4663093907891105330}
         m_TargetAssemblyTypeName: S_PlayerController, Assembly-CSharp
-        m_MethodName: Move
+        m_MethodName: OnMove
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -170,8 +170,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1141f3a82a26baf429971de6e27d1306, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  delayMove: 0.2
-  sizeCell: 2
+  moveDelay: 0.2
+  cellSize: 2
   rseGetCellPos: {fileID: 11400000, guid: 6f2d4544c5a6b2540a34ecee82feadef, type: 2}
   rsoCellPos: {fileID: 11400000, guid: f1089f593ed4b3e43b958e52b05dfb6e, type: 2}
   rsePlayerMove: {fileID: 11400000, guid: dbfe68b2c26635c429ea2a9f73f67b2a, type: 2}
