@@ -7,7 +7,7 @@ public class S_CollectManager : MonoBehaviour
 
     [Header("Output")]
     [SerializeField] private RSO_Coins rsoCoins;
-    [SerializeField] private RSO_TotalCoins rsoTotalCoins;
+    [SerializeField] private RSE_UpdateUICoins rseUpdateUICoins;
 
     private void OnEnable()
     {
@@ -19,14 +19,9 @@ public class S_CollectManager : MonoBehaviour
         rseCollecte.action -= AddCoins;
     }
 
-    private void Awake()
-    {
-        rsoCoins.Value = 0;
-        rsoTotalCoins.Value = 0;
-    }
-
     private void AddCoins(int quantity)
     {
         rsoCoins.Value += quantity;
+        rseUpdateUICoins.Call();
     }
 }
