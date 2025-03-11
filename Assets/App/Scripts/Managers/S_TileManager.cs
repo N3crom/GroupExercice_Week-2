@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class S_TileManager : MonoBehaviour
 {
+    [Header("Parameters")]
+    [SerializeField] private float sizeCell;
+
     [Header("References")]
     [SerializeField] private Transform tilemapGround;
     [SerializeField] private Transform tilemapWall;
@@ -13,8 +16,8 @@ public class S_TileManager : MonoBehaviour
     [Header("Output")]
     [SerializeField] private RSO_CellPos rsoCellPos;
 
-    [SerializeField] private SerializableDictionary<GameObject, Vector3> tileGroundDictionary = new SerializableDictionary<GameObject, Vector3>();
-    [SerializeField] private SerializableDictionary<GameObject, Vector3> tileWallDictionary = new SerializableDictionary<GameObject, Vector3>();
+    private SerializableDictionary<GameObject, Vector3> tileGroundDictionary = new SerializableDictionary<GameObject, Vector3>();
+    private SerializableDictionary<GameObject, Vector3> tileWallDictionary = new SerializableDictionary<GameObject, Vector3>();
 
     private void OnEnable()
     {
@@ -43,8 +46,8 @@ public class S_TileManager : MonoBehaviour
 
     private Vector3 GetNearestCell(Vector3 pos)
     {
-        float gridX = Mathf.Round(pos.x / 2) * 2;
-        float gridZ = Mathf.Round(pos.z / 2) * 2;
+        float gridX = Mathf.Round(pos.x / sizeCell) * sizeCell;
+        float gridZ = Mathf.Round(pos.z / sizeCell) * sizeCell;
 
         return new Vector3(gridX, 0, gridZ);
     }

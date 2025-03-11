@@ -8,7 +8,7 @@ public class S_Camera : MonoBehaviour
     [Header("Output")]
     [SerializeField] private RSO_CellPos rsoCellPos;
 
-    private Vector3 pos;
+    private Vector3 pos = Vector3.zero;
 
     private void OnEnable()
     {
