@@ -6,10 +6,6 @@ public class S_Coins : MonoBehaviour
     [SerializeField, TagName] private string tagPlayer;
     [SerializeField] private int quantity;
 
-    //[Header("References")]
-
-    //[Header("Input")]
-
     [Header("Output")]
     [SerializeField] private RSE_Collecte rseCollecte;
     [SerializeField] private RSO_TotalCoins rsoTotalCoins;
