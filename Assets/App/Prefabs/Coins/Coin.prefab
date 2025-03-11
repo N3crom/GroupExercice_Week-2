@@ -124,3 +124,4 @@ MonoBehaviour:
   tagPlayer: Player
   quantity: 1
   rseCollecte: {fileID: 11400000, guid: 066290e43ab591c4a8e8db82e69453b2, type: 2}
+  rsoTotalCoins: {fileID: 11400000, guid: 5db65fe24c841614c9823a95ae9bb86e, type: 2}

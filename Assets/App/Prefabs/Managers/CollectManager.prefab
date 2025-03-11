@@ -46,3 +46,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rseCollecte: {fileID: 11400000, guid: 066290e43ab591c4a8e8db82e69453b2, type: 2}
   rsoCoins: {fileID: 11400000, guid: 5cc838863ad5cf14fac3303648fd5a0e, type: 2}
+  rsoTotalCoins: {fileID: 11400000, guid: 5db65fe24c841614c9823a95ae9bb86e, type: 2}

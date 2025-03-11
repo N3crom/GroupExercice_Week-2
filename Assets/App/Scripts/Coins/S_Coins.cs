@@ -12,6 +12,12 @@ public class S_Coins : MonoBehaviour
 
     [Header("Output")]
     [SerializeField] private RSE_Collecte rseCollecte;
+    [SerializeField] private RSO_TotalCoins rsoTotalCoins;
+
+    private void Start()
+    {
+        rsoTotalCoins.Value += 1;
+    }
 
     private void OnTriggerEnter(Collider other)
     {
