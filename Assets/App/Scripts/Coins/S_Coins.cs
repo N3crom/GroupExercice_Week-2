@@ -17,7 +17,7 @@ public class S_Coins : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.CompareTag(tagPlayer))
+        if (other.CompareTag(tagPlayer))
         {
             rseCollecte.Call(quantity);
             Destroy(gameObject);
