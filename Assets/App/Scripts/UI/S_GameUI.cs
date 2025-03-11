@@ -24,12 +24,6 @@ public class S_GameUI : MonoBehaviour
         rseUpdateUICoins.action -= UpdateUI;
     }
 
-    private void Awake()
-    {
-        rsoCoins.Value = 0;
-        rsoTotalCoins.Value = 0;
-    }
-
     private IEnumerator LateStart()
     {
         yield return null;
