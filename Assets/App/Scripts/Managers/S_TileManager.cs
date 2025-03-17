@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -12,31 +13,34 @@ public class S_TileManager : MonoBehaviour
     [SerializeField] private Transform tilemapWall;
 
     [Header("Input")]
+    [SerializeField] private RSE_GetTypeTileLocked rseGetTypeTileLocked;
     [SerializeField] private RSE_GetCellPos rseGetCellPos;
 
     [Header("Output")]
     [SerializeField] private RSO_CellPos rsoCellPos;
     
-    private SerializableDictionary<Vector3, TileData>  m_TileDataGroundDictionary = new();
-    private SerializableDictionary<Vector3, TileData>  m_TileDataWallDictionary = new();
+    private SerializableDictionary<Vector3, TileData>  tileDataGroundDictionary = new();
+    private SerializableDictionary<Vector3, TileData>  tileDataWallDictionary = new();
 
-    private static readonly Vector3[] m_NeighborPosCell =
+    private static readonly Vector3[] neighborPosCell =
         { Vector3.left, Vector3.right, Vector3.forward, Vector3.back, Vector3.zero, new (1, 0, 1), new (-1, 0, -1), new (1, 0, -1), new (-1, 0, 1) };
 
     private void OnEnable()
     {
         rseGetCellPos.action += GetCellPosition;
+        rseGetTypeTileLocked.action += GetTileType;
     }
 
     private void OnDisable()
     {
         rseGetCellPos.action -= GetCellPosition;
+        rseGetTypeTileLocked.action -= GetTileType;
     }
 
     private void Awake()
     {
-        PopulateDictionary(tilemapGround, m_TileDataGroundDictionary);
-        PopulateDictionary(tilemapWall, m_TileDataWallDictionary);
+        PopulateDictionary(tilemapGround, tileDataGroundDictionary);
+        PopulateDictionary(tilemapWall, tileDataWallDictionary);
     }
     
     private void PopulateDictionary(Transform tilemap, SerializableDictionary<Vector3, TileData> dictionary)
@@ -61,38 +65,55 @@ public class S_TileManager : MonoBehaviour
         return new Vector3(gridX, 0, gridZ);
     }
 
-    private void GetCellPosition(Vector3 pos)
+    private void GetCellPosition(Vector3 pos, TileType[] tileCanMove)
     {
         Vector3 cellPos = GetNearestCell(pos);
-        DiscoverCell(cellPos);
         
-        var isGround = m_TileDataGroundDictionary.Dictionary.Keys.Any(tile => tile == cellPos);
-        var isWall = m_TileDataWallDictionary.Dictionary.Keys.Any(tile => tile == cellPos);
+        var isGround = tileDataGroundDictionary.Dictionary.Keys.Any(tile => tile == cellPos);
+        var isWall = tileDataWallDictionary.Dictionary.Keys.Any(tile => tile == cellPos);
 
-        if (isGround && !isWall)
+        // Check current tile type if is in tile accessible
+        if (isGround && tileCanMove.Contains(TileType.Ground) && !(isWall && !tileCanMove.Contains(TileType.Wall)))
         {
+            DiscoverCell(cellPos);
             rsoCellPos.Value = cellPos;
         }
     }
     
     private void DiscoverCell(Vector3 pos)
     {
-        foreach (var neighborPos in m_NeighborPosCell)
+        foreach (var neighborPos in neighborPosCell)
         {
             Vector3 neighborCell = pos + neighborPos * cellSize;
             
-            if (m_TileDataGroundDictionary.Dictionary.TryGetValue(neighborCell, out var groundTileData) && !groundTileData.cellDiscovered)
+            if (tileDataGroundDictionary.Dictionary.TryGetValue(neighborCell, out var groundTileData) && !groundTileData.cellDiscovered)
             {
                 groundTileData.cellDiscovered = true;
                 groundTileData.tile.SetActive(true);
             }
             
-            if (m_TileDataWallDictionary.Dictionary.TryGetValue(neighborCell, out var wallTileData) && !wallTileData.cellDiscovered)
+            if (tileDataWallDictionary.Dictionary.TryGetValue(neighborCell, out var wallTileData) && !wallTileData.cellDiscovered)
             {
                 wallTileData.cellDiscovered = true;
                 wallTileData.tile.SetActive(true);
             }
         }
+    }
+
+    /// <summary>
+    /// Get type of tile at x pos and return callback with the type
+    /// </summary>
+    /// <param name="pos"></param>
+    /// <param name="action"></param>
+    private void GetTileType(Vector3 pos, Action<TileType> action)
+    {
+        Vector3 cellPos = GetNearestCell(pos);
+        
+        var isGround = tileDataGroundDictionary.Dictionary.Keys.Any(tile => tile == cellPos);
+        var isWall = tileDataWallDictionary.Dictionary.Keys.Any(tile => tile == cellPos);
+        
+        if(isWall){ action?.Invoke(TileType.Wall);}
+        else if(isGround) action?.Invoke(TileType.Ground);
     }
     
 }
@@ -102,4 +123,10 @@ public class TileData
 {
     public GameObject tile;
     public bool cellDiscovered;
+}
+
+public enum TileType
+{
+    Ground,
+    Wall
 }

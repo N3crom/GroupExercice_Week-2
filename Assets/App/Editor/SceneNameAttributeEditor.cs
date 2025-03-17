@@ -1,48 +1,30 @@
-using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UIElements;
 
-namespace App.Scripts.Utils
-{
     [CustomPropertyDrawer(typeof(SceneNameAttribute))]
-    public class TagsNameAttributeEditor : PropertyDrawer
+    public class SceneNameAttributeEditor : PropertyDrawer
     {
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
-            EditorGUI.BeginProperty(position, label, property);
-
             if (property.propertyType != SerializedPropertyType.String)
             {
-                EditorGUI.LabelField(position, label.text, "Use [SceneName] with a String.");
-                EditorGUI.EndProperty();
+                EditorGUI.LabelField(position, label.text, "Use [Scene] with a string.");
                 return;
             }
-
-            var buildScenes = EditorBuildSettings.scenes;
-
-            if (buildScenes.Length <= 0)
+            
+            string[] scenes = new string[EditorBuildSettings.scenes.Length];
+            for (int i = 0; i < scenes.Length; i++)
             {
-                EditorGUI.LabelField(position, label.text, "No scenes in the Build Settings.");
-                EditorGUI.EndProperty();
-                return;
+                scenes[i] = System.IO.Path.GetFileNameWithoutExtension(EditorBuildSettings.scenes[i].path);
             }
 
-            // Get List of Scene Paths and Names
-            var scenePaths = buildScenes.Select(scene => scene.path).ToArray();
-            var sceneNames = scenePaths.Select(System.IO.Path.GetFileNameWithoutExtension).ToArray();
+            int selectedIndex = Mathf.Max(0, System.Array.IndexOf(scenes, property.stringValue));
+            selectedIndex = EditorGUI.Popup(position, label.text, selectedIndex, scenes);
 
-            string storedScenePath = AssetDatabase.GUIDToAssetPath(property.stringValue);
-            int selectedIndex = Mathf.Max(0, System.Array.IndexOf(scenePaths, storedScenePath));
-
-            // Find Scene Name if Path is Missing
-            if (selectedIndex == 0 && string.IsNullOrEmpty(storedScenePath))
+            if (selectedIndex >= 0 && selectedIndex < scenes.Length)
             {
-                string storedSceneName = System.IO.Path.GetFileNameWithoutExtension(storedScenePath);
-                selectedIndex = Mathf.Max(0, sceneNames.ToList().FindIndex(name => name == storedSceneName));
+                property.stringValue = scenes[selectedIndex];
             }
-
-            property.stringValue = AssetDatabase.AssetPathToGUID(scenePaths[EditorGUI.Popup(position, label.text, selectedIndex, sceneNames)]);
-            EditorGUI.EndProperty();
         }
     }
-}

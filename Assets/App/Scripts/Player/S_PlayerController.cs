@@ -1,32 +1,66 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class S_PlayerController : MonoBehaviour
 {
-    [Header("Settings")]
-    [SerializeField] private float moveDelay;
+    [Header("Settings")] [SerializeField] private float moveDelay;
     [SerializeField] private float cellSize;
 
-    [Header("Input")]
+    [Header("References")] [SerializeField]
+    private S_PlayerGhost playerGhost;
+
+    [Header("Input")] 
+    [SerializeField] private RSE_Death rseDeath;
     [SerializeField] private RSE_GetCellPos rseGetCellPos;
     [SerializeField] private RSO_CellPos rsoCellPos;
 
-    [Header("Output")]
+    [Header("Output")] 
+    [SerializeField] private RSE_GetTypeTileLocked rseGetTypeTileLocked;
     [SerializeField] private RSE_PlayerMove rsePlayerMove;
 
     bool isMoving = false;
+    bool canMove = true;
     private Coroutine moveCoroutine;
+    private Action delegateMoveDeath;
+
+    private static readonly TileType[] tileCanMove = {TileType.Ground};
+
+    private void Awake() => delegateMoveDeath = () => canMove = true;
+
+    private void OnEnable()
+    {
+        rseDeath.action += delegateMoveDeath;
+        playerGhost.onPowerUpDisable +=PowerUpDisable;
+    }
+
+    private void OnDisable()
+    {
+        rseDeath.action -= delegateMoveDeath;
+        playerGhost.onPowerUpDisable -= PowerUpDisable;
+    }
+
+    private void PowerUpDisable()
+    {
+        rseGetTypeTileLocked.Call(transform.position, value =>
+        {
+            if (value == TileType.Wall)
+            {
+                rseDeath.Call();
+            }
+        });
+    }
 
     private void Start()
     {
-        rseGetCellPos.Call(transform.position);
+        rseGetCellPos.Call(transform.position, playerGhost.powerUpEnable ? S_PlayerGhost.TileCanMove : tileCanMove);
     }
 
     private void Move(Vector2 direction)
     {
         Vector3 targetPos = transform.position + new Vector3(direction.x, 0, direction.y) * cellSize;
-        rseGetCellPos.Call(targetPos);
+        rseGetCellPos.Call(targetPos, playerGhost.powerUpEnable ? S_PlayerGhost.TileCanMove : tileCanMove );
 
         if (transform.position != rsoCellPos.Value)
         {
@@ -39,6 +73,8 @@ public class S_PlayerController : MonoBehaviour
     {
         while (isMoving)
         {
+            if (!canMove) break;
+            
             Move(direction);
 
             yield return new WaitForSeconds(moveDelay);

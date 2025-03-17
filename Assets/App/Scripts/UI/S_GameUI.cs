@@ -8,6 +8,7 @@ public class S_GameUI : MonoBehaviour
     [SerializeField] private float timeMessageShow;
 
     [Header("References")]
+    [SerializeField] private TextMeshProUGUI textPointMovement;
     [SerializeField] private TextMeshProUGUI textCoins;
     [SerializeField] private GameObject panelMessage;
     [SerializeField] private TextMeshProUGUI textMessage;
@@ -18,6 +19,7 @@ public class S_GameUI : MonoBehaviour
     [SerializeField] private RSE_Win rseWin;
 
     [Header("Output")]
+    [SerializeField] private RSO_PointMovement rsoPointMovement;
     [SerializeField] private RSO_Coins rsoCoins;
     [SerializeField] private RSO_TotalCoins rsoTotalCoins;
 
@@ -26,6 +28,7 @@ public class S_GameUI : MonoBehaviour
     private void OnEnable()
     {
         rseUpdateUICoins.action += UpdateUI;
+        rsoPointMovement.onValueChanged += UpdatePointMovement;
         rseNeedCoins.action += NeedMoreCoins;
         rseWin.action += Win;
     }
@@ -33,6 +36,7 @@ public class S_GameUI : MonoBehaviour
     private void OnDisable()
     {
         rseUpdateUICoins.action -= UpdateUI;
+        rsoPointMovement.onValueChanged -= UpdatePointMovement;
         rseNeedCoins.action -= NeedMoreCoins;
         rseWin.action -= Win;
     }
@@ -90,4 +94,10 @@ public class S_GameUI : MonoBehaviour
 
         panelMessage.SetActive(true);
     }
+    
+    private void UpdatePointMovement(int value)
+    {
+        textPointMovement.text = $"{value}";
+    }
+    
 }
