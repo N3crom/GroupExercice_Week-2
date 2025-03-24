@@ -19,3 +19,12 @@
 ### Refactor:
 - TileManager contain Dict with pos x,0,z of gameobject parent for key
 - Dict Values are now data with gameobject tile and if they are visited
+
+## Week 3 update
+### Requirements Done:
+you can now move with holding left click et swipe in a direction
+timer implement to finish in time or go to the menu
+randomize the spawn of the collectibles
+to test vertical add a custom resolution like (1080 pix by 1980 pix)
+fix movements points to be possible to finish the level
+

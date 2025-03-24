@@ -6,6 +6,7 @@ public class S_GameManager : MonoBehaviour
 {
     [Header("Settings")]
     [SerializeField, SceneName] private string nextLevelScene;
+    [SerializeField, SceneName] private string menuSceneOnDeath;
     [SerializeField] private float delayBeforeSwapLevel;
     
     [Header("Input")]
@@ -21,7 +22,7 @@ public class S_GameManager : MonoBehaviour
     private void Awake()
     {
         m_DelegateSwapLevel = () => StartCoroutine(SwapLevel(nextLevelScene));
-        m_DelegateSwapLevelDeath = () => StartCoroutine(SwapLevel(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name));
+        m_DelegateSwapLevelDeath = () => StartCoroutine(SwapLevel(menuSceneOnDeath/*UnityEngine.SceneManagement.SceneManager.GetActiveScene().name*/));
     }
 
     private void OnEnable()

@@ -7,6 +7,7 @@ public class S_PlayerController : MonoBehaviour
 {
     [Header("Settings")] [SerializeField] private float moveDelay;
     [SerializeField] private float cellSize;
+    [SerializeField] private float minSwipeDistance = 50f;
 
     [Header("References")] [SerializeField]
     private S_PlayerGhost playerGhost;
@@ -24,6 +25,8 @@ public class S_PlayerController : MonoBehaviour
     bool canMove = true;
     private Coroutine moveCoroutine;
     private Action delegateMoveDeath;
+    private Vector2 swipeStartPos;
+    private Vector2 swipeEndPos;
 
     private static readonly TileType[] tileCanMove = {TileType.Ground};
 
@@ -96,4 +99,42 @@ public class S_PlayerController : MonoBehaviour
             StopCoroutine(moveCoroutine);
         }
     }
+
+
+    public void OnSwipeDirection(InputAction.CallbackContext ctx)
+    {
+        if (ctx.started)
+        {
+            swipeStartPos = Mouse.current.position.ReadValue();
+        }
+        else if (ctx.canceled)
+        {
+            swipeEndPos = Mouse.current.position.ReadValue();
+            Vector2 swipeDelta = swipeEndPos - swipeStartPos;
+
+            if (swipeDelta.magnitude > minSwipeDistance)
+            {
+                Vector2 direction;
+
+                if (Mathf.Abs(swipeDelta.x) > Mathf.Abs(swipeDelta.y))
+                    direction = swipeDelta.x > 0 ? Vector2.right : Vector2.left;
+                else
+                    direction = swipeDelta.y > 0 ? Vector2.up : Vector2.down;
+
+                if (!isMoving)
+                {
+                    isMoving = true;
+                    moveCoroutine = StartCoroutine(MoveRoutine(direction));
+                }
+            }
+        }
+
+        if (ctx.canceled && moveCoroutine != null)
+        {
+            isMoving = false;
+
+            StopCoroutine(moveCoroutine);
+        }
+    }
+
 }

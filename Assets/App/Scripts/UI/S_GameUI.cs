@@ -10,6 +10,7 @@ public class S_GameUI : MonoBehaviour
     [Header("References")]
     [SerializeField] private TextMeshProUGUI textPointMovement;
     [SerializeField] private TextMeshProUGUI textCoins;
+    [SerializeField] private TextMeshProUGUI textGameTime;
     [SerializeField] private GameObject panelMessage;
     [SerializeField] private TextMeshProUGUI textMessage;
 
@@ -17,6 +18,7 @@ public class S_GameUI : MonoBehaviour
     [SerializeField] private RSE_UpdateUICoins rseUpdateUICoins;
     [SerializeField] private RSE_NeedCoins rseNeedCoins;
     [SerializeField] private RSE_Win rseWin;
+    [SerializeField] private RSE_OnGameTimerChange rseOnGameTimerChange;
 
     [Header("Output")]
     [SerializeField] private RSO_PointMovement rsoPointMovement;
@@ -31,6 +33,7 @@ public class S_GameUI : MonoBehaviour
         rsoPointMovement.onValueChanged += UpdatePointMovement;
         rseNeedCoins.action += NeedMoreCoins;
         rseWin.action += Win;
+        rseOnGameTimerChange.action += UpdateTimer;
     }
 
     private void OnDisable()
@@ -39,6 +42,7 @@ public class S_GameUI : MonoBehaviour
         rsoPointMovement.onValueChanged -= UpdatePointMovement;
         rseNeedCoins.action -= NeedMoreCoins;
         rseWin.action -= Win;
+        rseOnGameTimerChange.action -= UpdateTimer;
     }
 
     private IEnumerator LateStart()
@@ -56,6 +60,11 @@ public class S_GameUI : MonoBehaviour
     private void UpdateUI()
     {
         textCoins.text = $"{rsoCoins.Value} / {rsoTotalCoins.Value}";
+    }
+
+    private void UpdateTimer(float time)
+    {
+        textGameTime.text = $"time left: {time:F1}";
     }
 
     private IEnumerator MessageShow()

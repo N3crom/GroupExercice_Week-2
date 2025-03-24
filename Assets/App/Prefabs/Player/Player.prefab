@@ -182,6 +182,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: f256ce46-b73c-406c-9284-e9f3e55675c7
     m_ActionName: 'Main/Move[/Keyboard/upArrow,/Keyboard/downArrow,/Keyboard/leftArrow,/Keyboard/rightArrow]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4663093907891105330}
+        m_TargetAssemblyTypeName: S_PlayerController, Assembly-CSharp
+        m_MethodName: OnSwipeDirection
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: b6bc67e2-938d-42ac-a369-68674cb0ef12
+    m_ActionName: 'Main/Swipe[/Mouse/delta]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Main
@@ -201,6 +217,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveDelay: 0.2
   cellSize: 2
+  minSwipeDistance: 50
   playerGhost: {fileID: 4002879185327785184}
   rseDeath: {fileID: 11400000, guid: 4f1c1db17620ac64cb2ff27d748bbafd, type: 2}
   rseGetCellPos: {fileID: 11400000, guid: 6f2d4544c5a6b2540a34ecee82feadef, type: 2}

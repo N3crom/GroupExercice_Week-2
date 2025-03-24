@@ -180,7 +180,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3986223603829988131}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 1, y: 0, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -214,8 +214,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cellSize: 2
+  yOffsetCollectible: 1.5
   tilemapGround: {fileID: 5679273578841711553}
   tilemapWall: {fileID: 1987626013480380366}
+  CollectibleSPrefab:
+  - {fileID: 2457376860536369442, guid: ee011f2bdb94d56459ff841416cb5ad6, type: 3}
+  - {fileID: 6355314244266608041, guid: c4fee480b06960f4e84a5d374a8c4608, type: 3}
+  - {fileID: 6355314244266608041, guid: c4fee480b06960f4e84a5d374a8c4608, type: 3}
+  - {fileID: 6355314244266608041, guid: c4fee480b06960f4e84a5d374a8c4608, type: 3}
+  - {fileID: 6355314244266608041, guid: c4fee480b06960f4e84a5d374a8c4608, type: 3}
+  - {fileID: 6355314244266608041, guid: c4fee480b06960f4e84a5d374a8c4608, type: 3}
+  - {fileID: 6355314244266608041, guid: c4fee480b06960f4e84a5d374a8c4608, type: 3}
   rseGetTypeTileLocked: {fileID: 11400000, guid: 671b7a7969b3aff41887b671fdadb175, type: 2}
   rseGetCellPos: {fileID: 11400000, guid: 6f2d4544c5a6b2540a34ecee82feadef, type: 2}
   rsoCellPos: {fileID: 11400000, guid: f1089f593ed4b3e43b958e52b05dfb6e, type: 2}

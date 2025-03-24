@@ -36,6 +36,15 @@ public partial class @I_Inputs: IInputActionCollection2, IDisposable
                     ""processors"": ""NormalizeVector2"",
                     ""interactions"": ""Press"",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SwipeDirection"",
+                    ""type"": ""Button"",
+                    ""id"": ""b6bc67e2-938d-42ac-a369-68674cb0ef12"",
+                    ""expectedControlType"": """",
+                    ""processors"": ""NormalizeVector2"",
+                    ""interactions"": ""Press"",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -148,6 +157,17 @@ public partial class @I_Inputs: IInputActionCollection2, IDisposable
                     ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6d6647e8-c3a4-4721-8e60-d97130baee6e"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SwipeDirection"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -157,6 +177,7 @@ public partial class @I_Inputs: IInputActionCollection2, IDisposable
         // Main
         m_Main = asset.FindActionMap("Main", throwIfNotFound: true);
         m_Main_Move = m_Main.FindAction("Move", throwIfNotFound: true);
+        m_Main_SwipeDirection = m_Main.FindAction("SwipeDirection", throwIfNotFound: true);
     }
 
     ~@I_Inputs()
@@ -224,11 +245,13 @@ public partial class @I_Inputs: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Main;
     private List<IMainActions> m_MainActionsCallbackInterfaces = new List<IMainActions>();
     private readonly InputAction m_Main_Move;
+    private readonly InputAction m_Main_SwipeDirection;
     public struct MainActions
     {
         private @I_Inputs m_Wrapper;
         public MainActions(@I_Inputs wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_Main_Move;
+        public InputAction @SwipeDirection => m_Wrapper.m_Main_SwipeDirection;
         public InputActionMap Get() { return m_Wrapper.m_Main; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -241,6 +264,9 @@ public partial class @I_Inputs: IInputActionCollection2, IDisposable
             @Move.started += instance.OnMove;
             @Move.performed += instance.OnMove;
             @Move.canceled += instance.OnMove;
+            @SwipeDirection.started += instance.OnSwipeDirection;
+            @SwipeDirection.performed += instance.OnSwipeDirection;
+            @SwipeDirection.canceled += instance.OnSwipeDirection;
         }
 
         private void UnregisterCallbacks(IMainActions instance)
@@ -248,6 +274,9 @@ public partial class @I_Inputs: IInputActionCollection2, IDisposable
             @Move.started -= instance.OnMove;
             @Move.performed -= instance.OnMove;
             @Move.canceled -= instance.OnMove;
+            @SwipeDirection.started -= instance.OnSwipeDirection;
+            @SwipeDirection.performed -= instance.OnSwipeDirection;
+            @SwipeDirection.canceled -= instance.OnSwipeDirection;
         }
 
         public void RemoveCallbacks(IMainActions instance)
@@ -268,5 +297,6 @@ public partial class @I_Inputs: IInputActionCollection2, IDisposable
     public interface IMainActions
     {
         void OnMove(InputAction.CallbackContext context);
+        void OnSwipeDirection(InputAction.CallbackContext context);
     }
 }

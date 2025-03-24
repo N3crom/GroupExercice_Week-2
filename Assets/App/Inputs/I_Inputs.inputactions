@@ -13,6 +13,15 @@
                     "processors": "NormalizeVector2",
                     "interactions": "Press",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "SwipeDirection",
+                    "type": "Button",
+                    "id": "b6bc67e2-938d-42ac-a369-68674cb0ef12",
+                    "expectedControlType": "",
+                    "processors": "NormalizeVector2",
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -125,6 +134,17 @@
                     "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "6d6647e8-c3a4-4721-8e60-d97130baee6e",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SwipeDirection",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }

@@ -1,16 +1,17 @@
-using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class S_TileManager : MonoBehaviour
 {
     [Header("Settings")]
     [SerializeField] private float cellSize;
+    [SerializeField] private float yOffsetCollectible;
 
     [Header("References")]
     [SerializeField] private Transform tilemapGround;
     [SerializeField] private Transform tilemapWall;
+    [SerializeField] private List<GameObject> CollectibleSPrefab;
 
     [Header("Input")]
     [SerializeField] private RSE_GetTypeTileLocked rseGetTypeTileLocked;
@@ -41,6 +42,7 @@ public class S_TileManager : MonoBehaviour
     {
         PopulateDictionary(tilemapGround, tileDataGroundDictionary);
         PopulateDictionary(tilemapWall, tileDataWallDictionary);
+        SetUpCollectibles();
     }
     
     private void PopulateDictionary(Transform tilemap, SerializableDictionary<Vector3, TileData> dictionary)
@@ -54,6 +56,22 @@ public class S_TileManager : MonoBehaviour
             };
             dictionary.Dictionary[new Vector3(child.position.x, 0,child.position.z)] = tileData;
             child.gameObject.SetActive(false);
+        }
+    }
+
+    private void SetUpCollectibles()
+    {
+        var list = tileDataGroundDictionary.Dictionary.Keys.ToList();
+
+        List<Vector3> collectiblePos = new List<Vector3>();
+
+        foreach (var collectible in CollectibleSPrefab)
+        {
+            var randomIndex = Random.Range(0, list.Count);
+
+            Instantiate(collectible, list[randomIndex] + new Vector3(0, yOffsetCollectible, 0), Quaternion.identity);
+
+            list.Remove(list[randomIndex]);
         }
     }
 
@@ -105,7 +123,7 @@ public class S_TileManager : MonoBehaviour
     /// </summary>
     /// <param name="pos"></param>
     /// <param name="action"></param>
-    private void GetTileType(Vector3 pos, Action<TileType> action)
+    private void GetTileType(Vector3 pos, System.Action<TileType> action)
     {
         Vector3 cellPos = GetNearestCell(pos);
         

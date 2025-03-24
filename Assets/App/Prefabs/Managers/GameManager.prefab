@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7306926465945037973}
   - component: {fileID: 52827953583577021}
+  - component: {fileID: 11417333041119613}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -45,7 +46,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nextLevelScene: MainMenu
-  deathLevelScene: MainMenu
+  menuSceneOnDeath: 
   delayBeforeSwapLevel: 1
   rseDeath: {fileID: 11400000, guid: 4f1c1db17620ac64cb2ff27d748bbafd, type: 2}
   rseWin: {fileID: 11400000, guid: 9ab77965f83331746b598019337a28e1, type: 2}
+  rseGetTypeTileLocked: {fileID: 0}
+--- !u!114 &11417333041119613
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2199322572356457142}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 493dfa85b90edfd4e81ab2aeadfeac69, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _gameTimeToFinish: 100
+  _rseOnGameTimerChange: {fileID: 11400000, guid: e8ee4955b9d14a54ba415977f29daf42, type: 2}
+  _rseDeath: {fileID: 11400000, guid: 4f1c1db17620ac64cb2ff27d748bbafd, type: 2}

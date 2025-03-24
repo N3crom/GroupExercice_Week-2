@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 812fa0577a54dab478a6cbcd5bfaf60a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxPoints: 10
+  maxPoints: 50
   rsoPointMovement: {fileID: 11400000, guid: 9ee395763b79e3c49afdab195e36687e, type: 2}
   rsePlayerMove: {fileID: 11400000, guid: dbfe68b2c26635c429ea2a9f73f67b2a, type: 2}
   rseDeath: {fileID: 11400000, guid: 4f1c1db17620ac64cb2ff27d748bbafd, type: 2}
